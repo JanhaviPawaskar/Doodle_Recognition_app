@@ -346,7 +346,16 @@ function App() {
         ×
       </button>
       <h2>About the Doodle Recognition App</h2>
-      <p>This app allows you to draw doodles and uses a machine learning model to recognize them in real time.</p>
+      <p> Doodle Recognition App allows users to draw simple sketches on a digital canvas and uses machine learning to recognize what the drawing represents. It provides real-time predictions based on the input doodle using a model trained on the Quick, Draw! dataset by Google.</p>
+<p>
+🔹 Features:</p>
+<p>Freehand drawing canvas </p>
+<p>
+Real-time doodle prediction</p>
+<p>
+Top match suggestions with confidence levels</p>
+<p>
+Clean and interactive UI</p>
     </div>
   </div>
 )}
