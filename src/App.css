@@ -1,0 +1,44 @@
+body {
+  margin: 0;
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  min-height: 100vh;
+}
+
+.MuiAppBar-root {
+  box-shadow: 0 8px 24px 0 rgba(31, 38, 135, 0.13);
+}
+
+/* Canvas container and prediction box are styled with MUI, but add some extra polish */
+.react-sketch-canvas {
+  border-radius: 16px !important;
+  box-shadow: 0 4px 18px 0 rgba(31, 38, 135, 0.08);
+  background: #fff !important;
+}
+
+.MuiPaper-root {
+  transition: box-shadow 0.3s;
+}
+
+button, .MuiButton-root {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.MuiTypography-h5, .MuiTypography-h6 {
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (max-width: 600px) {
+  .MuiPaper-root {
+    max-width: 98vw !important;
+    padding: 8px !important;
+  }
+  .react-sketch-canvas {
+    width: 90vw !important;
+    height: 60vw !important;
+    min-width: 180px !important;
+    min-height: 180px !important;
+  }
+}

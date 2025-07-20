@@ -1,0 +1,99 @@
+import React, { useRef, useState } from "react";
+import { ReactSketchCanvas } from "react-sketch-canvas";
+import "./App.css";
+
+function App() {
+  const canvasRef = useRef(null);
+  const [prediction, setPrediction] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const clearCanvas = () => {
+    canvasRef.current.clear();
+    setPrediction("");
+  };
+
+const getImageData = () => {
+  const canvas = canvasRef.current.canvas.drawing;
+  const offscreen = document.createElement("canvas");
+  offscreen.width = 28;
+  offscreen.height = 28;
+  const ctx = offscreen.getContext("2d");
+
+  // Fill background with white
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 28, 28);
+
+  // Draw the scaled-down drawing on the offscreen canvas
+  ctx.drawImage(canvas, 0, 0, 28, 28);
+
+  const imageData = ctx.getImageData(0, 0, 28, 28);
+  const pixels = [];
+
+  for (let i = 0; i < imageData.data.length; i += 4) {
+    const r = imageData.data[i];
+    const g = imageData.data[i + 1];
+    const b = imageData.data[i + 2];
+    const grayscale = (r + g + b) / 3;
+    pixels.push(grayscale / 255);
+  }
+
+  return pixels;
+};
+
+
+  const handlePredict = async () => {
+    setLoading(true);
+    const image = getImageData();
+
+    try {
+      const response = await fetch("http://localhost:5000/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image }),
+      });
+
+      const data = await response.json();
+      setPrediction(data.label);
+    } catch (err) {
+      setPrediction("Error: Could not connect to backend");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="App">
+      <h1>Doodle Recognizer 🎨</h1>
+
+    <ReactSketchCanvas
+      ref={canvasRef}
+      strokeWidth={2}
+      strokeColor="black"
+      canvasColor="white"
+      width="300px"
+      height="300px"
+      style={{ border: "2px solid #ccc", marginBottom: "10px" }}
+    />
+
+
+      <div>
+        <button onClick={handlePredict} disabled={loading}>
+          {loading ? "Predicting..." : "Predict"}
+        </button>
+        <button onClick={clearCanvas} style={{ marginLeft: "10px" }}>
+          Clear
+        </button>
+      </div>
+
+      <div style={{ marginTop: "20px" }}>
+        <h2>Prediction:</h2>
+        <p>{prediction}</p>
+      </div>
+    </div>
+  );
+}
+
+export default App;
